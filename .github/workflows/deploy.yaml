@@ -1,12 +1,10 @@
 name: deploy
-on:
-  registry_package:
-    types:
-    - published
+on: registry_package
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: development
     steps:
     - name: Checkout
       uses: actions/checkout@v2
