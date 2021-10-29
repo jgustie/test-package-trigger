@@ -22,7 +22,7 @@ jobs:
       env:
         IMAGE: '${{ github.event.registry_package.namespace }}/${{ github.event.registry_package.name }}'
         SOURCE_IMAGE: '${{ github.event.registry_package.package_version.package_url }}'
-        TARGET_IMAGE: '${{ steps.login.outputs.registry }}/${{ github.event.registry_package.name }}:${{ github.event.registry_package.package_version.tag.name }}'
+        TARGET_IMAGE: '${{ steps.login.outputs.registry }}/${{ github.event.registry_package.name }}:${{ github.event.registry_package.package_version.container_metadata.tag.name }}'
       run: |
         # Fake retagging the image
         docker pull "${SOURCE_IMAGE}"
