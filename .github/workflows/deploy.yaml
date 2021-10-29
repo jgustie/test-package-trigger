@@ -14,4 +14,29 @@ jobs:
     - name: Dump the payload
       run: |
         echo "${{toJSON(github.event)}}"
-        kustomize version
+    - name: Dummy Login
+      id: login
+      run: |
+        echo "::set-output name=registry::fakeregistry.io/something"
+    - name: Kustomize Edit
+      env:
+        IMAGE: '${{ github.event.registry_package.namespace }}/${{ github.event.registry_package.name }}'
+        SOURCE_IMAGE: '${{ github.event.registry_package.package_version.package_url }}'
+        TARGET_IMAGE: '${{ steps.login.outputs.registry }}/${{ github.event.registry_package.name }}:${{ github.event.registry_package.package_version.tag.name }}'
+      run: |
+        # Fake retagging the image
+        docker pull "${SOURCE_IMAGE}"
+        docker tag "${SOURCE_IMAGE}" "${TARGET_IMAGE}"
+
+        # Update the image reference
+        cd dev
+        kustomize edit set image "${IMAGE}=${TARGET_IMAGE}"
+        git commit \
+          --author "GitHub Actions <tools@stormforge.io>" \
+          --message "Update reference to ${SOURCE_IMAGE}" \
+          -- kustomization.yaml
+        git push
+
+    - name: Kustomize Dev
+      run: |
+        kustomize build ./dev
