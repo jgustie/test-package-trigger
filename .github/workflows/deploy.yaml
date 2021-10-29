@@ -3,6 +3,7 @@ on:
   registry_package:
     types:
     - published
+    - updated
 
 jobs:
   deploy:
