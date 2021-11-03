@@ -3,6 +3,6 @@ kind: Kustomization
 resources:
 - ../base
 images:
-- name: jgustie/test-deploy
-  newName: fakeregistry.io/something/test-deploy
-  newTag: sha-ad50925
+- digest: sha256:f63f87e5869bb2a410dd750c4df01ed08ee34016928cb2a1450ceb3a1df1c130
+  name: jgustie/test-deploy
+  newName: ghcr.io/jgustie/such-test-deploy
