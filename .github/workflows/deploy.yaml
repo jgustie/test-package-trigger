@@ -61,6 +61,8 @@ jobs:
       name: development
       url: http://example.invalid/applications/${{ github.event.registry_package.name }}
     steps:
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Dump kustomize build
       run: |
         kustomize build ./dev
