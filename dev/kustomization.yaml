@@ -5,4 +5,4 @@ resources:
 images:
 - name: jgustie/test-deploy
   newName: fakeregistry.io/something/test-deploy
-  newTag: sha-e2a9184
+  newTag: sha-b3f5ca7
