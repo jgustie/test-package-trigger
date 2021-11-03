@@ -16,7 +16,7 @@ jobs:
       image: '${{ steps.login.outputs.registry }}/such-${{ github.event.registry_package.name }}@${{ github.event.registry_package.package_version.version }}'
     steps:
     - name: Install registry package
-      run: '${{ github.event.registry_package.installation_command }}'
+      run: '${{ github.event.registry_package.package_version.installation_command }}'
     - name: Dummy Login
       id: login
       run: |
