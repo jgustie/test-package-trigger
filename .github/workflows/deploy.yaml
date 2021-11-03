@@ -4,6 +4,9 @@ on: registry_package
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: development
+      url: http://example.invalid
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -23,7 +26,7 @@ jobs:
         IMAGE: '${{ github.event.registry_package.namespace }}/${{ github.event.registry_package.name }}'
         SOURCE_IMAGE: '${{ github.event.registry_package.package_version.package_url }}'
         TARGET_IMAGE: '${{ steps.login.outputs.registry }}/${{ github.event.registry_package.name }}:${{ github.event.registry_package.package_version.container_metadata.tag.name }}'
-        GIT_COMMITTER_NAME: 'GitHub Actions'
+        GIT_COMMITTER_NAME: 'gramLabs Automation'
         GIT_COMMITTER_EMAIL: 'tools@stormforge.io'
         GIT_AUTHOR_NAME: 'StormForge Developer'
         GIT_AUTHOR_EMAIL: '${{ github.actor }}@users.noreply.github.com'
