@@ -1,0 +1,34 @@
+name: Deploy
+on:
+  push:
+    branches:
+    - main
+    paths:
+    - '**/dev/**'
+concurrency: development
+jobs:
+
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Dump the payload
+      run: |
+        echo "${{toJSON(github.event)}}"
+
+  application:
+    runs-on: ubuntu-latest
+    outputs:
+      deploy-url: ${{ steps.inspect-commit.outputs.url }}
+    steps:
+    - name: Inspect commit
+      id: inspect-commit
+      run: |
+        # TODO
+        echo "::set-output name=url::https://example.invalid/applications/x"
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ needs.application.outputs.deploy-url }}
+    environment:
+      name: development
+      url: ${{ needs.application.outputs.deploy-url }}
