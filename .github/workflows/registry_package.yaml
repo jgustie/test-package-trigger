@@ -62,3 +62,14 @@ jobs:
     - name: Dump kustomize build
       run: |
         kustomize build applications/test-deploy/dev
+
+  update-env:
+    runs-on: ubuntu-latest
+    needs: deploy
+    environment:
+      name: development
+      url: https://example.invalid/applications/x
+    steps:
+    - name: Info
+      run: |
+        echo "Print so much information"
