@@ -28,7 +28,7 @@ jobs:
         TARGET_IMAGE: '${{ steps.login.outputs.registry }}/such-${{ github.event.registry_package.name }}'
       id: push
       run: |
-        docker tag "${SOURCE_IMAGE" "${TARGET_IMAGE}"
+        docker tag "${SOURCE_IMAGE}" "${TARGET_IMAGE}"
         docker push "${TARGET_IMAGE}"
         echo "::set-output name=image::${TARGET_IMAGE}@${{ github.event.registry_package.package_version.version }}"
 
