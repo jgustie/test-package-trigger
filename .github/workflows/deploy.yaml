@@ -32,3 +32,7 @@ jobs:
     environment:
       name: development
       url: ${{ needs.application.outputs.deploy-url }}
+    steps:
+    - name: Info
+      run: |
+        echo "Print so much stuff"
