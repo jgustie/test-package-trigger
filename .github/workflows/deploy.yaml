@@ -54,10 +54,9 @@ jobs:
         SOURCE_IMAGE: ${{ github.event.registry_package.package_version.package_url }}
         TARGET_IMAGE: ${{ needs.publish.outputs.image }}
       run: |
-        find applications -path "*/${{ github.event.registry_package.name }}/dev/kustomization.yaml" -execdir \
-          kustomize edit set image "${SOURCE_IMAGE%:*}=${TARGET_IMAGE}" && \
-          git commit -m "Update the '${{ github.event.registry_package.name }}' image reference" -- kustomization.yaml \
-          ;
+        find applications -path "*/${{ github.event.registry_package.name }}/dev/kustomization.yaml" \
+          -execdir kustomize edit set image "${SOURCE_IMAGE%:*}=${TARGET_IMAGE}" \; \
+          -execdir git commit -m "Update the '${{ github.event.registry_package.name }}' image reference" -- kustomization.yaml \;
         git push
     - name: Dump kustomize build
       run: |
