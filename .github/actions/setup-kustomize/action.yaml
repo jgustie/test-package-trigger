@@ -1,0 +1,10 @@
+name: 'Setup Kustomize'
+description: 'Setup Kustomize and add it to the PATH'
+inputs:
+  kustomize-version:
+    description: 'The Kustomize version to download and use.'
+    default: 'latest'
+    required: true
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

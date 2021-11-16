@@ -45,10 +45,8 @@ jobs:
       run: |
         echo "GIT_AUTHOR_NAME=$(curl -s "${{ github.event.sender.url }}" | jq -r '.name')" >> $GITHUB_ENV
         echo "GIT_AUTHOR_EMAIL=${{ github.event.sender.login }}@users.noreply.github.com" >> $GITHUB_ENV
-    - name: Install Kustomize
-      run: |
-        curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
-        sudo mv kustomize /usr/local/bin/kustomize
+    - name: Setup Kustomize
+      uses: ./.github/actions/setup-kustomize
     - name: Update image reference
       env:
         SOURCE_IMAGE: ${{ github.event.registry_package.package_version.package_url }}
