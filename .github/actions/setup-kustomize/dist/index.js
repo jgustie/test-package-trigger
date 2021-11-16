@@ -15273,7 +15273,7 @@ async function downloadKustomize(versionSpec) {
         if (versionSpec == 'latest' || semver.satisfies(version, versionSpec)) {
             version = release.name.substr(10);
             for (const asset of release.assets) {
-                if (asset.name == `kustomize_${version}_${os}_${arch}`) {
+                if (asset.name == `kustomize_${version}_${os}_${arch}.tar.gz`) {
                     downloadURL = asset.browser_download_url;
                 }
             }
