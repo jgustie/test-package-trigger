@@ -15262,7 +15262,7 @@ async function downloadKustomize(versionSpec) {
     let downloadURL = '';
     let os = process.platform;
     let arch = process.arch;
-    if (arch == 'x64') {
+    if (arch === 'x64') {
         arch = 'amd64';
     }
     let toolPath = ''
@@ -15270,10 +15270,10 @@ async function downloadKustomize(versionSpec) {
     const octokit = new Octokit();
     const releases = await octokit.rest.repos.listReleases({owner: 'kubernetes-sigs', repo: 'kustomize'});
     for (const release of releases.data.filter(r => r.name.startsWith('kustomize/') && !r.prerelease)) {
-        if (versionSpec == 'latest' || semver.satisfies(version, versionSpec)) {
+        if (versionSpec === 'latest' || semver.satisfies(version, versionSpec)) {
             version = release.name.substr(10);
             for (const asset of release.assets) {
-                if (asset.name == `kustomize_${version}_${os}_${arch}.tar.gz`) {
+                if (asset.name === `kustomize_${version}_${os}_${arch}.tar.gz`) {
                     downloadURL = asset.browser_download_url;
                 }
             }
@@ -15288,7 +15288,7 @@ async function downloadKustomize(versionSpec) {
         throw new Error(`Unable to find download for version ${version} (${os}/${arch})`);
     }
 
-    if (version != versionSpec) {
+    if (version !== versionSpec) {
         toolPath = tc.find('kustomize', version);
         if (toolPath) {
             core.info(`Found in cache @ ${toolPath}`);
@@ -15298,9 +15298,9 @@ async function downloadKustomize(versionSpec) {
 
     core.info(`Attempting to download ${version} (${os}/${arch})...`);
     const downloadPath = await tc.downloadTool(downloadURL);
-    fs.chmodSync(downloadPath, 0o755);
+    const extracted = await tc.extractTar(downloadPath);
 
-    toolPath = await tc.cacheFile(downloadPath, 'kustomize', 'kustomize', version);
+    toolPath = await tc.cacheFile(`${extracted}/kustomize`, 'kustomize', 'kustomize', version);
     core.info(`Successfully cached kustomize to ${toolPath}`);
     return toolPath;
 }
