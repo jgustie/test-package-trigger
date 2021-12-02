@@ -3,6 +3,6 @@ kind: Kustomization
 resources:
 - ../base
 images:
-- digest: sha256:e9750857ae46ca94375511030732a55c59952f74c09b3dd485443ab0fb174fc4
+- digest: sha256:34e109db9d2f520676f4cb9866028ab9c775d1d43ad1bd8f83def65601be1a6f
   name: ghcr.io/jgustie/test-deploy
   newName: ghcr.io/jgustie/such-test-deploy
