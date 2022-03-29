@@ -15268,7 +15268,7 @@ async function downloadKustomize(versionSpec) {
     let toolPath = ''
 
     const octokit = new Octokit();
-    octokit.paginate(octokit.rest.repos.listReleases, {
+    await octokit.paginate(octokit.rest.repos.listReleases, {
         owner: 'kubernetes-sigs',
         repo: 'kustomize',
     })
