@@ -33,18 +33,24 @@ async function downloadKustomize(versionSpec) {
     let toolPath = ''
 
     const octokit = new Octokit();
-    const releases = await octokit.rest.repos.listReleases({owner: 'kubernetes-sigs', repo: 'kustomize'});
-    for (const release of releases.data.filter(r => r.name.startsWith('kustomize/') && !r.prerelease)) {
-        if (versionSpec === 'latest' || semver.satisfies(version, versionSpec)) {
-            version = release.name.substr(10);
-            for (const asset of release.assets) {
-                if (asset.name === `kustomize_${version}_${os}_${arch}.tar.gz`) {
-                    downloadURL = asset.browser_download_url;
+    octokit.paginate(octokit.rest.repos.listReleases, {
+        owner: 'kubernetes-sigs',
+        repo: 'kustomize',
+    })
+    .then((releases) => {
+        for (const release of releases.filter(r => r.name.startsWith('kustomize/') && !r.prerelease)) {
+            let versionName = release.name.substring(10);
+            if (versionSpec === 'latest' || semver.satisfies(versionName, versionSpec, {})) {
+                version = versionName;
+                for (const asset of release.assets) {
+                    if (asset.name === `kustomize_${version}_${os}_${arch}.tar.gz`) {
+                        downloadURL = asset.browser_download_url;
+                    }
                 }
+                break;
             }
-            break;
         }
-    }
+    });
 
     if (!version) {
         throw new Error(`Unable to resolve version ${versionSpec}`);
